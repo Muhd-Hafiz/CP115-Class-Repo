@@ -1,0 +1,7 @@
+message1 = ('syafiq fell down5 "ouch!"')
+message2 = ("chris said 'love iskandar'")
+message3 = ('"syafiq" said "chris said \'love iskandar\'"')
+
+print(message1)
+print(message2)
+print(message3)

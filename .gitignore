@@ -59,3 +59,9 @@ coverage.xml
 # Windows
 Thumbs.db
 Desktop.ini
+
+# Python Virtual Environments
+cp115_env/
+venv/
+env/
+.env/
