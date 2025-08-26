@@ -25,6 +25,7 @@ venv/
 ENV/
 env/
 venv.bak/
+cp115_env/
 
 # Unit test / coverage reports
 htmlcov/
@@ -59,9 +60,3 @@ coverage.xml
 # Windows
 Thumbs.db
 Desktop.ini
-
-# Python Virtual Environments
-cp115_env/
-venv/
-env/
-.env/
