@@ -3,10 +3,10 @@ import subprocess
 import sys
 import os
 
-@pytest.fixture
+pytest.fixture
 def exercise_path():
     """Fixture to get the path to exercise1.py"""
-    return os.path.join(os.path.dirname(os.path.dirname(__file__)), 'exercise1.py')
+    return os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'exercise1.py')
 
 def run_exercise(exercise_path, inputs):
     """Run exercise1.py with given inputs and return output"""
@@ -20,7 +20,7 @@ def run_exercise(exercise_path, inputs):
     
     stdout, stderr = process.communicate(input=inputs)
     
-    if stderr:
+    if process.returncode != 0:
         pytest.fail(f"Error running script: {stderr}")
     
     return stdout
@@ -41,12 +41,14 @@ def test_student_classifications(exercise_path, gpa, credits, expected_classific
     
     # Extract just the classification from the output
     lines = output.strip().split('\n')
-    classification_line = [line for line in lines if "Classification:" in line][0]
-    actual_classification = classification_line.split("Classification: ")[1]
+    classification_lines = [line for line in lines if "Classification:" in line]
+    assert classification_lines, "No 'Classification:' line found in output"
+    classification_line = classification_lines[0]
+    actual_classification = classification_line.split("Classification: ")[1].strip()
     
     assert actual_classification == expected_classification, f"Expected '{expected_classification}' but got '{actual_classification}'"
 
-@pytest.mark.parametrize("gpa,credits,expected_classification", [
+    @pytest.mark.parametrize("gpa,credits,expected_classification", [
     (3.9, 9, "Good Standing"),   # Part-time high GPA
     (3.6, 8, "Good Standing"),   # Part-time honor roll GPA  
     (1.5, 6, "Academic Probation"),  # Part-time low GPA
@@ -58,7 +60,9 @@ def test_part_time_students(exercise_path, gpa, credits, expected_classification
     
     # Extract just the classification from the output
     lines = output.strip().split('\n')
-    classification_line = [line for line in lines if "Classification:" in line][0]
-    actual_classification = classification_line.split("Classification: ")[1]
+    classification_lines = [line for line in lines if "Classification:" in line]
+    assert classification_lines, "No 'Classification:' line found in output"
+    classification_line = classification_lines[0]
+    actual_classification = classification_line.split("Classification: ")[1].strip()
     
     assert actual_classification == expected_classification, f"Expected '{expected_classification}' but got '{actual_classification}'"
